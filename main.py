@@ -2,9 +2,11 @@
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
+import sys
+sys.setrecursionlimit(3000)
+
 import math
-import datetime
-import dateutil
+
 #cost function -->시작위치 지정, theta 개수 지정(여기선 1차방정식으로만)
 # gradient -->alpha값 지정
 
@@ -28,7 +30,7 @@ def gradient_function(theta0,theta1,alpha):
     result_theta0=theta0-alpha*sum(np.array(H_x)-np.array(y))/m
     result_theta1=theta1-alpha*sum((np.array(H_x)-np.array(y))*np.array(x))/m
     print(result_theta0,result_theta1)
-
+    gradient_function_moving.append(1/2/m*((np.array(H_x)-np.array(y))*np.array(x))**2)
     if count==2000:
 
         return [result_theta0,result_theta1]
@@ -38,11 +40,11 @@ def cost_function():
     pass
 
 
-result=gradient_function(theta0,theta1,0.001)
+result=gradient_function(theta0,theta1,0.008)
 plt.figure(1)
 plt.scatter(x,y)
 plt.plot(x,result[0]+result[1]*x,color='red')
 
 plt.figure(2)
-
+plt.plot(gradient_function_moving)
 plt.show()
