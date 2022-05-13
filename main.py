@@ -30,7 +30,7 @@ def gradient_function(theta0,theta1,alpha):
     result_theta0=theta0-alpha*sum(np.array(H_x)-np.array(y))/m
     result_theta1=theta1-alpha*sum((np.array(H_x)-np.array(y))*np.array(x))/m
     print(result_theta0,result_theta1)
-    gradient_function_moving.append(1/2/m*((np.array(H_x)-np.array(y))*np.array(x))**2)
+    gradient_function_moving.append(1/2/m*(np.array(H_x)-np.array(y))**2)
     if count==2000:
 
         return [result_theta0,result_theta1]
