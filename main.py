@@ -10,26 +10,39 @@ import dateutil
 
 dataset=pd.DataFrame(pd.read_csv("C:/processed file.csv"))
 A=pd.DataFrame([dataset.iloc[:,4],dataset.iloc[:,10]])
-print(A)
+
 x=dataset.iloc[:,4]
 y=dataset.iloc[:,10]
-plt.scatter(x,y)
+m=len(x)
 
-plt.plot(x,x*0+1010,color='red')
-# plt.show()
-# dataset.to_csv("C:/Users/HAN/Downloads/processed file.csv",header=True)
-#
-# dataset=pd.DataFrame(pd.read_csv("C:/Users/HAN/Downloads/processed file.csv"))
-# print(dataset)
-#
-# dataset['Formatted Date']=pd.to_datetime(dataset['Formatted Date'])
-# print(type(dataset['Formatted Date'][0]))
-# plt.xlabel('시간')
-# plt.ylabel('온도(C)')
-#
-# x=dataset['Formatted Date']
-# y=dataset['Apparent Temperature (C)']
-#
-# plt.scatter(dataset['Formatted Date'],dataset['Apparent Temperature (C)'],c='b',marker='o',s=0.5)
-# plt.plot(,x*0.005+10)
+
+theta0=1010;theta1=0
+
+count=0
+gradient_function_moving=[]
+def gradient_function(theta0,theta1,alpha):
+    global count
+    count+=1
+
+    H_x = theta0 + theta1 * x
+    result_theta0=theta0-alpha*sum(np.array(H_x)-np.array(y))/m
+    result_theta1=theta1-alpha*sum((np.array(H_x)-np.array(y))*np.array(x))/m
+    print(result_theta0,result_theta1)
+
+    if count==2000:
+
+        return [result_theta0,result_theta1]
+    else:
+        return gradient_function(result_theta0,result_theta1,alpha=alpha)
+def cost_function():
+    pass
+
+
+result=gradient_function(theta0,theta1,0.001)
+plt.figure(1)
+plt.scatter(x,y)
+plt.plot(x,result[0]+result[1]*x,color='red')
+
+plt.figure(2)
+
 plt.show()
