@@ -1,7 +1,7 @@
-import numpy as np
-import pandas as pd
-from matplotlib import pyplot as plt
+import requests
 
-dataset=pd.DataFrame(pd.read_csv("C:/Users/HAN/Downloads/processed file.csv"))
-print(dataset)
-dataset['Formatted Date']=pd.to_datetime(dataset['Formatted Date'])
+url = 'http://apis.data.go.kr/B552895/openapi/service/OrgPriceExaminService/getExaminPriceList'
+params ={'serviceKey' : '서비스키' }
+
+response = requests.get(url, params=params)
+print(response.content)
