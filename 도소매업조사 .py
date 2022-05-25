@@ -24,11 +24,15 @@ for i,j in enumerate(earning_rate):
         print(dataset.iloc[0:,6][i])
 print(dataset.iloc[0:,11])
 # print(count)
-print(np.percentile(earning_rate,2,interpolation='nearest'))
-# plt.plot(earning_rate)
-# for i,j in enumerate(earning_rate):
-#     if j >= 1:earning_rate[i]=medain_value
+range_set=np.percentile(earning_rate,[1,99])
+delete_set=[]
+for i,j in enumerate(earning_rate):
+    if j<range_set[0] or j >range_set[1]:
+        delete_set.append(i)
+
+dataset=dataset.drop(delete_set,axis=0)
+
+earning_rate=np.array(dataset.iloc[0:,11])/np.array(dataset.iloc[0:,6])
+plt.scatter(earning_rate,dataset.iloc[0:,0])
 #
-# plt.scatter(earning_rate,dataset.iloc[0:,0])
-#
-# plt.show()
+plt.show()
