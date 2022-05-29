@@ -12,25 +12,20 @@ matplotlib.rcParams['axes.unicode_minus'] = False
 
 from matplotlib import pyplot
 dataset=pd.DataFrame(pd.read_csv("C:/도소매업조사_음식숙박업(제공)_2016.csv",encoding='cp949'))
-# print(dataset.iloc[0:,0])
-# print(dataset.iloc[0:,7])
-# print(dataset.iloc[0:,6])
+
 
 earning_rate=np.array(dataset.iloc[0:,11])/np.array(dataset.iloc[0:,6])
 
 print(earning_rate)
 medain_value=(statistics.median(earning_rate))
 
-# print(min(earning_rate))
-# print(len(earning_rate))
 count=0
 for i,j in enumerate(earning_rate):
     if np.isnan(j)==True:
         print(i)
         print(dataset.iloc[0:,11][i])
         print(dataset.iloc[0:,6][i])
-print(dataset.iloc[0:,11])
-# print(count)
+
 
 
 delete_set=set()
@@ -49,25 +44,41 @@ for i in range(len(earning_rate)):
         delete_set.add(i)
     if dataset.iloc[0:,6][i]<revenue_range[0] or dataset.iloc[0:,6][i]>revenue_range[1]:
         delete_set.add(i)
-
+    if np.isnan(dataset.iloc[0:,5][i]):delete_set.add(i)
 dataset=dataset.drop(delete_set,axis=0)
-# plt.figure(1)
+
 earning_rate=np.array(dataset.iloc[0:,11])/np.array(dataset.iloc[0:,6])
-# plt.scatter(earning_rate,dataset.iloc[0:,0])
+
+# pyplot.suptitle('y축=매출액')
+# for i in range(0,12):
+#     plt.subplot(3,4,i+1)
+#     if i == 6:
+#         plt.scatter(earning_rate,dataset.iloc[0:,6])
+#         plt.title('영업이익률')
+#         continue
 #
-# plt.figure(2)
-# plt.hist(dataset.iloc[0:,0],bins=200)
-# plt.show()
-pyplot.suptitle('y축=매출액')
-for i in range(0,12):
-    plt.subplot(3,4,i+1)
-    if i == 6:
-        plt.scatter(earning_rate,dataset.iloc[0:,6])
-        plt.title('영업이익률')
-        continue
+#     plt.scatter(dataset.iloc[0:,i],dataset.iloc[0:,6])
+#     plt.title(dataset.columns[i])
+#
+#
+# # plt.show() plotting
+x=pd.DataFrame(dataset.iloc[0:,:2])
+x.insert(0,'x_0',np.ones(len(earning_rate)))
+x.insert(3,'영업이익률',earning_rate)
+x.insert(4,'건물합계면적',dataset.iloc[0:,5])
+x.insert(5,'영업비용',dataset.iloc[0:,7])
 
-    plt.scatter(dataset.iloc[0:,i],dataset.iloc[0:,6])
-    plt.title(dataset.columns[i])
-
-
+for i in range(0,5):
+    plt.plot(2,3,i)
+    plt.scatter(x.iloc[0:,i],dataset.iloc[0:6])
 plt.show()
+# x.insert(5,)
+# print(x.columns)
+theta=np.array(np.zeros(len(x.columns)))
+print(x)
+H_x=x*theta
+print(H_x)
+#Gradient Descent
+    #Feature scaling
+
+#Normal Equation
