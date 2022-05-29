@@ -58,6 +58,7 @@ earning_rate=np.array(dataset.iloc[0:,11])/np.array(dataset.iloc[0:,6])
 # plt.figure(2)
 # plt.hist(dataset.iloc[0:,0],bins=200)
 # plt.show()
+pyplot.suptitle('y축=매출액')
 for i in range(0,12):
     plt.subplot(3,4,i+1)
     if i == 6:
