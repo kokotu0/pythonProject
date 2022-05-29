@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import statistics
 import matplotlib
+import collections
 
 matplotlib.rcParams['font.family'] = 'Malgun Gothic'
 
@@ -26,13 +27,8 @@ for i,j in enumerate(earning_rate):
         print(dataset.iloc[0:,11][i])
         print(dataset.iloc[0:,6][i])
 
-
-
 delete_set=set()
 
-#'''Index(['종사자수_총소계', '연간급여_합계', '건물소유면적', '건물임차면적', '건물무상면적', '건물합계면적', '매출액',
-#       '영업비용', '인건비', '임차료', '기타영업비용', '영업이익', '사업체승수', '종사자승수', '매출액승수'],
-#     dtype='object')
 earning_rate_range=np.percentile(earning_rate,[1,99])
 employee_range=np.percentile(dataset.iloc[0:,0],[1,99])
 revenue_range=np.percentile(dataset.iloc[0:,6],[1,99])
@@ -68,17 +64,66 @@ x.insert(3,'영업이익률',earning_rate)
 x.insert(4,'건물합계면적',dataset.iloc[0:,5])
 x.insert(5,'영업비용',dataset.iloc[0:,7])
 
-for i in range(0,5):
-    plt.plot(2,3,i)
-    plt.scatter(x.iloc[0:,i],dataset.iloc[0:6])
-plt.show()
+# for i in range(0,5):
+#     plt.subplot(2,3,i+1)
+#     plt.scatter(x.iloc[0:,i],dataset.iloc[0:,6])
+# plt.show()
+
 # x.insert(5,)
 # print(x.columns)
-theta=np.array(np.zeros(len(x.columns)))
+
+
+#Feature scaling 종사자수, 연간급여, 영업이익률, 건물합계면적, 영업비용(2,3,4,5,6)
+
+x=x.reset_index()
+
+def feature_scaling(dataframe,column_number):
+    return dataframe.iloc[0:,column_number]/abs(max(dataframe.iloc[0:,column_number])-min(dataframe.iloc[0:,column_number]))
+for i in [3,4,5,6]:
+    x.iloc[0:,i]=feature_scaling(x,i)
+x=x.drop(['index'],axis=1)
+y=feature_scaling(dataset,6)
+y=y.reset_index(drop=True)
 print(x)
-H_x=x*theta
-print(H_x)
+print(y)
 #Gradient Descent
-    #Feature scaling
+count=0
+gradient_function_moving=[]
+theta=np.array(np.zeros(len(x.columns)))
+
+def J_theta(x=pd.DataFrame,theta=np.array,y=np.array):
+    return (x@theta-y)**2 /len(y)
+print(J_theta(x,theta,y))
+A=[]
+for i,j in enumerate(x.iloc[:,2]):
+    if np.isnan(j):
+        if x.iloc[i,1]<6:
+            x.iloc[i,2]=0
+        A.append(i)
+
+print(A)
+
+for i in A:
+    print(x.iloc[i,:])
+
+# def gradient_function(theta0,theta1,alpha):
+#     global count
+#     count+=1
+#
+#     H_x = theta0 + theta1 * x
+#     result_theta0=theta0-alpha*sum(np.array(H_x)-np.array(y))/m
+#     result_theta1=theta1-alpha*sum((np.array(H_x)-np.array(y))*np.array(x))/m
+#     print(result_theta0,result_theta1)
+#     gradient_function_moving.append(1/2/m*sum((np.array(H_x)-np.array(y))**2))
+#     if count==2000:
+#
+#         return [result_theta0,result_theta1]
+#     else:
+#         return gradient_function(result_theta0,result_theta1,alpha=alpha)
+#
+
+#기본 theta 모음 ==> zero 벡터로
+
+print()
 
 #Normal Equation
