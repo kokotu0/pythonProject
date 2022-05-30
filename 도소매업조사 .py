@@ -121,14 +121,17 @@ def gradient_function(theta,x,y,alpha,count=0):
             new_theta[i] = theta[i] - alpha * sum((np.array(H_x) - y)*x.iloc[:,i]) / len(y)
 
     J_theta_moving.append(J_theta(x,new_theta,y))
-    if count==1000:
+    if count==200:
         return new_theta
     else:
         return gradient_function(new_theta,x,y,alpha=alpha,count=count)
-gradient_function(theta,x,y,0.0001)
-print(J_theta_moving[7:])
+result=gradient_function(theta,x,y,0.0001)
+# print(J_theta_moving[7:])
 
-plt.plot(J_theta_moving[7:])
-
+# plt.plot(J_theta_moving[7:])
+# plt.plot(x@result)
+plt.scatter(x@result,y)
+a=np.linspace(0,0.6,10000)
+plt.plot(a,a,'r')
 plt.show()
 #Normal Equation
