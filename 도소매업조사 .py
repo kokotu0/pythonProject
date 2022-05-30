@@ -45,7 +45,7 @@ dataset=dataset.drop(delete_set,axis=0)
 
 earning_rate=np.array(dataset.iloc[0:,11])/np.array(dataset.iloc[0:,6])
 
-# pyplot.suptitle('y축=매출액')
+# pyplot.suptitle('y축=매출액') '''변수간의 관계 확인 plot'''
 # for i in range(0,12):
 #     plt.subplot(3,4,i+1)
 #     if i == 6:
@@ -74,6 +74,7 @@ x.insert(5,'영업비용',dataset.iloc[0:,7])
 
 
 #Feature scaling 종사자수, 연간급여, 영업이익률, 건물합계면적, 영업비용(2,3,4,5,6)
+#전처리 과정
 
 x=x.reset_index()
 
@@ -89,7 +90,7 @@ gradient_function_moving=[]
 theta=np.array(np.zeros(len(x.columns)))
 
 def J_theta(x=pd.DataFrame,theta=np.array,y=np.array):
-    return (x@theta-y)**2 /len(y)
+    return sum(x@theta-y)**2 /len(y)
 
 delete_set=[]
 for i,j in enumerate(x.iloc[:,2]):
@@ -99,12 +100,10 @@ for i,j in enumerate(x.iloc[:,2]):
         else:
             delete_set.append(i)
 
-x= x.drop(delete_set, axis=0);y=y.drop(delete_set,axis=0)
-x=x.reset_index(drop=True)
 y=feature_scaling(dataset,6)
-y=y.reset_index(drop=True)
-print(x)
-print(y)
+y=np.delete(np.array(y),delete_set)
+x= x.drop(delete_set, axis=0);
+x=x.reset_index(drop=True)
 print(J_theta(x,theta,y))
 
 #Gradient Descent
