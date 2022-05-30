@@ -107,24 +107,28 @@ x=x.reset_index(drop=True)
 print(J_theta(x,theta,y))
 
 #Gradient Descent
-# def gradient_function(theta0,theta1,alpha):
-#     global count
-#     count+=1
-#
-#     H_x = theta0 + theta1 * x
-#     result_theta0=theta0-alpha*sum(np.array(H_x)-np.array(y))/m
-#     result_theta1=theta1-alpha*sum((np.array(H_x)-np.array(y))*np.array(x))/m
-#     print(result_theta0,result_theta1)
-#     gradient_function_moving.append(1/2/m*sum((np.array(H_x)-np.array(y))**2))
-#     if count==2000:
-#
-#         return [result_theta0,result_theta1]
-#     else:
-#         return gradient_function(result_theta0,result_theta1,alpha=alpha)
-#
+J_theta_moving=[]
+def gradient_function(theta,x,y,alpha,count=0):
+    count+=1
+    H_x=x@theta
+    new_theta=np.ones(len(theta))
+    print(J_theta(x,theta,y))
+    for i in range(len(theta)):
+        if i==0:
+            new_theta[i]=theta[i]-alpha*sum(np.array(H_x)-(y))/len(y)
 
-#기본 theta 모음 ==> zero 벡터로
+        else:
+            new_theta[i] = theta[i] - alpha * sum((np.array(H_x) - y)*x.iloc[:,i]) / len(y)
 
-print()
+    J_theta_moving.append(J_theta(x,new_theta,y))
+    if count==1000:
+        return new_theta
+    else:
+        return gradient_function(new_theta,x,y,alpha=alpha,count=count)
+gradient_function(theta,x,y,0.0001)
+print(J_theta_moving[7:])
 
+plt.plot(J_theta_moving[7:])
+
+plt.show()
 #Normal Equation
