@@ -82,30 +82,32 @@ def feature_scaling(dataframe,column_number):
 for i in [3,4,5,6]:
     x.iloc[0:,i]=feature_scaling(x,i)
 x=x.drop(['index'],axis=1)
-y=feature_scaling(dataset,6)
-y=y.reset_index(drop=True)
-print(x)
-print(y)
-#Gradient Descent
+
+
 count=0
 gradient_function_moving=[]
 theta=np.array(np.zeros(len(x.columns)))
 
 def J_theta(x=pd.DataFrame,theta=np.array,y=np.array):
     return (x@theta-y)**2 /len(y)
-print(J_theta(x,theta,y))
-A=[]
+
+delete_set=[]
 for i,j in enumerate(x.iloc[:,2]):
     if np.isnan(j):
         if x.iloc[i,1]<6:
             x.iloc[i,2]=0
-        A.append(i)
+        else:
+            delete_set.append(i)
 
-print(A)
+x= x.drop(delete_set, axis=0);y=y.drop(delete_set,axis=0)
+x=x.reset_index(drop=True)
+y=feature_scaling(dataset,6)
+y=y.reset_index(drop=True)
+print(x)
+print(y)
+print(J_theta(x,theta,y))
 
-for i in A:
-    print(x.iloc[i,:])
-
+#Gradient Descent
 # def gradient_function(theta0,theta1,alpha):
 #     global count
 #     count+=1
