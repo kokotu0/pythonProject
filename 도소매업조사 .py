@@ -50,7 +50,7 @@ earning_rate=np.array(dataset.iloc[0:,11])/np.array(dataset.iloc[0:,6])
 #     plt.subplot(3,4,i+1)
 #     if i == 6:
 #         plt.scatter(earning_rate,dataset.iloc[0:,6])
-#         plt.title('영업이익률')
+#         plt.title('영업0이익률')
 #         continue
 #
 #     plt.scatter(dataset.iloc[0:,i],dataset.iloc[0:,6])
